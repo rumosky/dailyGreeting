@@ -20,65 +20,11 @@ def getAccessToken(appId, appSecret):
     url = 'https://api.weixin.qq.com/cgi-bin/token'
     return httpGet(url, params)
 
-# 获取运势标题
-def getFortuneTitle():
+# 获取运势信息
+def getFortuneData():
     url = 'https://api.vvhan.com/api/horoscope'
-    talk = httpGet(url, {'type': 'aries','time':'today'})
-    return talk['data']['title']
-
-# 获取幸运颜色
-def getLuckyColor():
-    url = 'https://api.vvhan.com/api/horoscope'
-    talk = httpGet(url, {'type': 'aries','time':'today'})
-    return talk['data']['luckycolor']
-
-# 获取幸运数字
-def getLuckyNumber():
-    url = 'https://api.vvhan.com/api/horoscope'
-    talk = httpGet(url, {'type': 'aries','time':'today'})
-    return talk['data']['luckynumber']
-
-# 获取速配星座
-def getLuckyConstellation():
-    url = 'https://api.vvhan.com/api/horoscope'
-    talk = httpGet(url, {'type': 'aries','time':'today'})
-    return talk['data']['luckyconstellation']
-
-# 获取短评
-def getShortComment():
-    url = 'https://api.vvhan.com/api/horoscope'
-    talk = httpGet(url, {'type': 'aries','time':'today'})
-    return talk['data']['shortcomment']
-
-# 获取综合运势
-def getFortuneText():
-    url = 'https://api.vvhan.com/api/horoscope'
-    talk = httpGet(url, {'type': 'aries','time':'today'})
-    return talk['data']['fortunetext']['all']
-
-# 获取爱情运势
-def getFortuneLove():
-    url = 'https://api.vvhan.com/api/horoscope'
-    talk = httpGet(url, {'type': 'aries','time':'today'})
-    return talk['data']['fortunetext']['love']
-
-# 获取学业运势
-def getFortuneWork():
-    url = 'https://api.vvhan.com/api/horoscope'
-    talk = httpGet(url, {'type': 'aries','time':'today'})
-    return talk['data']['fortunetext']['work']
-
-# 获取财富运势
-def getFortuneMoney():
-    url = 'https://api.vvhan.com/api/horoscope'
-    talk = httpGet(url, {'type': 'aries','time':'today'})
-    return talk['data']['fortunetext']['money']
-
-# 获取健康运势
-def getFortuneHealth():
-    url = 'https://api.vvhan.com/api/horoscope'
-    talk = httpGet(url, {'type': 'aries','time':'today'})
-    return talk['data']['fortunetext']['health']
+    data = httpGet(url, {'type': 'sagittarius','time':'today'})
+    return data
 
 # 发送模版消息
 def sendTemplateMessage(content, accessToken):
@@ -103,16 +49,17 @@ if __name__ == '__main__':
     accessTokenInfo = getAccessToken(appId, appSecret)
     accessToken = accessTokenInfo['access_token']
     name = getNickName()
-    fortuneTitle = getFortuneTitle()
-    luckyColor = getLuckyColor()
-    luckyNumber = getLuckyNumber()
-    luckyConstellation = getLuckyConstellation()
-    shortComment = getShortComment()
-    fortuneText = getFortuneText()
-    fortuneLove = getFortuneLove()
-    fortuneWork = getFortuneWork()
-    fortuneMoney = getFortuneMoney()
-    fortuneHealth = getFortuneHealth()
+    fortuneData = getFortuneData()
+    fortuneTitle = fortuneData['data']['title']
+    luckyColor = fortuneData['data']['luckycolor']
+    luckyNumber = fortuneData['data']['luckynumber']
+    luckyConstellation = fortuneData['data']['luckyconstellation']
+    shortComment = fortuneData['data']['shortcomment']
+    fortuneText = fortuneData['data']['fortunetext']['all']
+    fortuneLove = fortuneData['data']['fortunetext']['love']
+    fortuneWork = fortuneData['data']['fortunetext']['work']
+    fortuneMoney = fortuneData['data']['fortunetext']['money']
+    fortuneHealth = fortuneData['data']['fortunetext']['health']
 
 
     for i in range(len(openIdList)):
