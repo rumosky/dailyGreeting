@@ -97,7 +97,7 @@ if __name__ == '__main__':
     weatherInfo = getWeather(abCode, gaoDeKey)
     weather = weatherInfo['lives'][0]
     sentence = getMorningGreeting()
-    birthDays = getBirthDays(birthDay)
+    birthDays = getBirthDays(birthDay) + 1
     togetherDays = getTogetherDays(togetherDay)
     week = getWeek()
     name = getNickName()
