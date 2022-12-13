@@ -21,17 +21,11 @@ def getAccessToken(appId, appSecret):
     url = 'https://api.weixin.qq.com/cgi-bin/token'
     return httpGet(url, params)
 
-# 获取每日励志英语（英文）
+# 获取每日励志英语
 def getDailyEnglish():
     url = 'https://api.vvhan.com/api/en'
     talk = httpGet(url, {'type': 'json'})
-    return talk['data']['en']
-
-# 获取每日励志英语（中文）
-def getDailyChinese():
-    url = 'https://api.vvhan.com/api/en'
-    talk = httpGet(url, {'type': 'json'})
-    return talk['data']['zh']
+    return talk
 
 # 获取在一起天数
 def getTogetherDays(togetherDay):
@@ -63,8 +57,9 @@ if __name__ == '__main__':
 
     accessTokenInfo = getAccessToken(appId, appSecret)
     accessToken = accessTokenInfo['access_token']
-    sentenceZh = getDailyChinese()
-    sentenceEn = getDailyEnglish()
+    dailyEnglish = getDailyEnglish()
+    sentenceZh = dailyEnglish['data']['zh']
+    sentenceEn = dailyEnglish['data']['en']
     togetherDays = getTogetherDays(togetherDay)
     name = getNickName()
 
