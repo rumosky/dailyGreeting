@@ -1,6 +1,7 @@
 import requests
 import json
 from datetime import datetime
+from zhdate import ZhDate
 import random
 
 def httpGet(url, params):
@@ -38,7 +39,7 @@ def getMorningGreeting():
     love = httpGet(url, {'type': 'json'})
     return love['ishan']
 
-# 获取生日倒计时
+# 获取公历生日倒计时
 def getBirthDays(birthDay):
     currentDate = str(datetime.now())
     temp = currentDate[:4]
@@ -52,6 +53,25 @@ def getBirthDays(birthDay):
         tempBirthday = str(temp) + '-' + birthDay
         birthDay = datetime.strptime(tempBirthday, '%Y-%m-%d')
         interval = birthDay - datetime.now()
+        leftDay = interval.days + 1
+    return leftDay
+
+# 获取农历生日倒计时
+def getLunarBirthdays(lunarBirthday):
+    currentDate = str(datetime.now())
+    temp = currentDate[:4]
+    tempLunarBirthday = ZhDate(int(temp),int(lunarBirthday[:2]),int(lunarBirthday[3:5]))
+    Lunarbirthday = str(tempLunarBirthday.to_datetime())
+    currentLunarbirthDay = datetime.strptime(Lunarbirthday[:10], '%Y-%m-%d')
+    interval = currentLunarbirthDay - datetime.now()
+    if (interval.days >= 0):
+        leftDay = interval.days + 1
+    else:
+        temp = int(temp) + 1
+        tempBirthday = ZhDate(int(temp),int(lunarBirthday[:2]),int(lunarBirthday[3:5]))
+        nextBirthDay = str(tempBirthday.to_datetime())
+        currentBirthDay = datetime.strptime(nextBirthDay[:10], '%Y-%m-%d')
+        interval = currentBirthDay - datetime.now()
         leftDay = interval.days + 1
     return leftDay
 
@@ -98,8 +118,10 @@ if __name__ == '__main__':
     gaoDeKey = 'xxx'
     # 所在地点abCode（高德后台可以获取 https://a.amap.com/lbs/static/amap_3dmap_lite/AMap_adcode_citycode.zip）
     abCode = '610113'
-    # 填写公历生日的日期，月-日
+    # 填写公历生日的日期，格式：月-日 例如01-01
     birthDay = '11-01'
+    # 填写农历生日的日期，格式：月-日 例如01-01
+    lunarBirthday = '01-01'
     # 在一起的时间
     togetherDay = '2022-11-01'
 
@@ -109,6 +131,7 @@ if __name__ == '__main__':
     weather = weatherInfo['lives'][0]
     sentence = getMorningGreeting()
     birthDays = getBirthDays(birthDay)
+    lunarBirthdays = getLunarBirthdays(lunarBirthday)
     togetherDays = getTogetherDays(togetherDay)
     week = getWeek()
     name = getNickName()
@@ -147,7 +170,7 @@ if __name__ == '__main__':
                     'color': '#ff4dff'
                 },
                 'birthDays': {
-                    'value': birthDays,
+                    'value': birthDays,  # 农历生日请替换为 lunarBirthdays
                     'color': '#ff4dff'
                 },
                 'week': {
