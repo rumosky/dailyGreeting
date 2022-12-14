@@ -40,9 +40,20 @@ def getMorningGreeting():
 
 # 获取生日倒计时
 def getBirthDays(birthDay):
-    birthDay = datetime.strptime(birthDay, '%Y-%m-%d')
-    interval = birthDay - datetime.now()
-    return interval.days
+    currentDate = str(datetime.now())
+    temp = currentDate[:4]
+    tempBirthday = temp + '-' + birthDay
+    currentbirthDay = datetime.strptime(tempBirthday, '%Y-%m-%d')
+    interval = currentbirthDay - datetime.now()
+    if (interval.days >= 0):
+        leftDay = interval.days + 1
+    else:
+        temp = int(temp) + 1
+        tempBirthday = str(temp) + '-' + birthDay
+        birthDay = datetime.strptime(tempBirthday, '%Y-%m-%d')
+        interval = birthDay - datetime.now()
+        leftDay = interval.days + 1
+    return leftDay
 
 # 获取在一起天数
 def getTogetherDays(togetherDay):
@@ -87,8 +98,8 @@ if __name__ == '__main__':
     gaoDeKey = 'xxx'
     # 所在地点abCode（高德后台可以获取 https://a.amap.com/lbs/static/amap_3dmap_lite/AMap_adcode_citycode.zip）
     abCode = '610113'
-    # 最近一次生日的日期
-    birthDay = '2022-11-01'
+    # 填写公历生日的日期，月-日
+    birthDay = '11-01'
     # 在一起的时间
     togetherDay = '2022-11-01'
 
@@ -97,7 +108,7 @@ if __name__ == '__main__':
     weatherInfo = getWeather(abCode, gaoDeKey)
     weather = weatherInfo['lives'][0]
     sentence = getMorningGreeting()
-    birthDays = getBirthDays(birthDay) + 1
+    birthDays = getBirthDays(birthDay)
     togetherDays = getTogetherDays(togetherDay)
     week = getWeek()
     name = getNickName()
